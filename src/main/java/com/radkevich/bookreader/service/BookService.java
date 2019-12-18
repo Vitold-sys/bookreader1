@@ -1,7 +1,13 @@
 package com.radkevich.bookreader.service;
 
-import org.springframework.stereotype.Service;
+import com.radkevich.bookreader.model.Book;
+import com.radkevich.bookreader.repository.BookRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@Service
-public class BookService {
+
+public class BookService  {
+    @Autowired
+    private BookRepo bookRepo;
 }

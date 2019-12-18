@@ -1,7 +1,9 @@
 package com.radkevich.bookreader.controller;
 
+import com.radkevich.bookreader.model.Book;
 import com.radkevich.bookreader.model.Comment;
 import com.radkevich.bookreader.model.User;
+import com.radkevich.bookreader.repository.BookRepo;
 import com.radkevich.bookreader.repository.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,17 +15,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class MainController {
+public class CommentController {
+    @Autowired
+    private BookRepo bookRepo;
+
     @Autowired
     private CommentRepo commentRepo;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
+        Iterable<Book> books = bookRepo.findAll();
+        model.put("books", books);
         return "greeting";
     }
 
@@ -39,7 +45,6 @@ public class MainController {
 
         model.addAttribute("comments", comments);
         model.addAttribute("filter", filter);
-
         return "main";
     }
 

@@ -1,12 +1,9 @@
 package com.radkevich.bookreader.model;
 
-
 import javax.persistence.*;
-
 
 @Entity
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

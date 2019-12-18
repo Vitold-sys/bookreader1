@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface BookRepo extends CrudRepository<Book, Long> {
     List<Book> findByTag(String tag);
-
 }
