@@ -43,13 +43,6 @@ public class BookController {
         return "book";
     }
 
-    @GetMapping("/book/edit/{book}")
-    public String bookEditForm(@PathVariable Book book, Model model){
-        model.addAttribute("book", book);
-        return "bookEdit";
-    }
-
-    
     @PostMapping("/book/edit/{book}")
     public String bookUpdate(@PathVariable Book book,
                              @RequestParam(required = false) Long id,
@@ -57,10 +50,12 @@ public class BookController {
                              @RequestParam("descripton") String description,
                              @RequestParam("text") String text,
                              @RequestParam("tag") String tag,
-                             @RequestParam("genre") String genre
-                             ){
+                             @RequestParam("genre") String genre,
+                             Model model
+    ){
+        model.addAttribute("book", book);
         bookRepo.save(book);
-        return "redirect:/book/edit/" + book.getId();
+        return "bookEdit";
     }
 
     @PostMapping("/book")
