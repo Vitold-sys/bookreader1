@@ -7,11 +7,9 @@ import com.radkevich.bookreader.repository.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -43,7 +41,14 @@ public class BookController {
         return "book";
     }
 
-    @PostMapping("/book/edit/{book}")
+    @GetMapping("/book/edit/{book}")
+    public String bookEditForm(@PathVariable Book book, Model model){
+        model.addAttribute("book", book);
+        return "bookEdit";
+    }
+
+
+/*    @PostMapping("/book/edit/{book}")
     public String bookUpdate(@PathVariable Book book,
                              @RequestParam(required = false) Long id,
                              @RequestParam("bookname") String bookname,
@@ -52,10 +57,18 @@ public class BookController {
                              @RequestParam("tag") String tag,
                              @RequestParam("genre") String genre,
                              Model model
-    ){
+                             ){
         model.addAttribute("book", book);
         bookRepo.save(book);
         return "bookEdit";
+    }*/
+
+    @PostMapping("/book/edit/{book}")
+    public String bookUpdate(@PathVariable("book") Long id, @RequestBody @Valid Book book, Model model
+    ){
+        model.addAttribute("book", book);
+        bookRepo.save(book);
+        return "redirect:/book/edit/" + book.getId();
     }
 
     @PostMapping("/book")

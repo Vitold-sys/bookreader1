@@ -3,7 +3,7 @@
 <@c.page>
     <h5>Book Editor</h5>
     <a href="/book" type="submit" class="btn btn-outline-primary">Back to book list</a>
-    <form action="/book/edit/{book}" method="post">
+    <form action="/book/edit/${book.id}" method="post">
         <div class="card">
             <div class="card-header">
                 <div class="input-group">
@@ -36,7 +36,6 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Tags</span>
                     </div>
-
                     <div class="form-check form-check">
                         <input class="form-check-input" type="checkbox" id="Checkbox1" value="option1">
                         <label class="form-check-label" for="Checkbox1">Antology</label>
