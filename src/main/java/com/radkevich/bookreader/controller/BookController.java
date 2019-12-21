@@ -63,12 +63,20 @@ public class BookController {
         return "bookEdit";
     }*/
 
-    @PostMapping("/book/edit/{book}")
+/*    @PostMapping("/book/edit/{book}")
     public String bookUpdate(@PathVariable("book") Long id, @RequestBody @Valid Book book, Model model
     ){
         model.addAttribute("book", book);
         bookRepo.save(book);
         return "redirect:/book/edit/" + book.getId();
+    }*/
+
+    @PostMapping("/book/edit/{book.id}")
+    public String bookUpdate(@PathVariable(name="book.id") Book book, Model model
+    ){
+        model.addAttribute("book", book);
+        bookRepo.save(book);
+        return "booklist";
     }
 
     @PostMapping("/book")

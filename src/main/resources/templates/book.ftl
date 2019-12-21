@@ -20,6 +20,14 @@
         </div>
 </form>
 
+<div>
+<a class="col align-self-center" href="/book/${book.id}/like">
+
+        <i class="fas fa-heart"></i>
+
+        <i class="far fa-heart"></i>
+    </div>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <form method="get" action="/main" class="form-inline">
@@ -38,7 +46,7 @@
     </a>
     <div class="collapse <#if comment??>show</#if>" id="collapseExample">
         <div class="form-group mt-3">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" action="/main">
                 <div class="form-group">
                     <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}"
                            value="<#if comment??>${comment.text}</#if>" name="text" placeholder="Insert comment" />

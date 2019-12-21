@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -53,7 +52,6 @@ public class CommentController {
             comment.setAuthor(user);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-
             model.mergeAttributes(errorsMap);
             model.addAttribute("comments", comment);
         } else {
@@ -61,8 +59,9 @@ public class CommentController {
         }
         Iterable<Comment> comments = commentRepo.findAll();
         model.addAttribute("comments", comments);
-
-        return "main";
+        Iterable<Book> books = bookRepo.findAll();
+        model.addAttribute("books", books);
+        return "booklist";
     }
 
     @PostMapping("filter")

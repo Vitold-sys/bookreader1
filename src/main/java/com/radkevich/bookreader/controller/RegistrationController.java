@@ -48,41 +48,31 @@ public class RegistrationController {
     ) {
         String url = String.format(CAPTCHA_URL, secret, captchaResponce);
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-
         if (!response.isSuccess()) {
             model.addAttribute("captchaError", "Fill captcha");
         }
-
         boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
-
         if (isConfirmEmpty) {
             model.addAttribute("password2Error", "Password confirmation cannot be empty");
         }
-
         if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
             model.addAttribute("passwordError", "Passwords are different!");
         }
-
         if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
-
             model.mergeAttributes(errors);
-
             return "registration";
         }
-
         if (!userService.addUser(user)) {
             model.addAttribute("usernameError", "User exists!");
             return "registration";
         }
-
         return "redirect:/login";
     }
 
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
-
         if (isActivated) {
             model.addAttribute("messageType", "success");
             model.addAttribute("message", "User successfully activated");
@@ -90,7 +80,6 @@ public class RegistrationController {
             model.addAttribute("messageType", "danger");
             model.addAttribute("message", "Activation code is not found!");
         }
-
         return "login";
     }
 }
