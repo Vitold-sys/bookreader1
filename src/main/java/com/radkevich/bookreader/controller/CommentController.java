@@ -5,6 +5,7 @@ import com.radkevich.bookreader.model.Comment;
 import com.radkevich.bookreader.model.User;
 import com.radkevich.bookreader.repository.BookRepo;
 import com.radkevich.bookreader.repository.CommentRepo;
+import com.radkevich.bookreader.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.Map;
 @Controller
 public class CommentController {
     @Autowired
+    private CommentService commentService;
+    @Autowired
     private BookRepo bookRepo;
 
     @Autowired
@@ -34,46 +37,18 @@ public class CommentController {
 
     @GetMapping("/main")
     public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Comment> comments = commentRepo.findAll();
-
-        if (filter != null && !filter.isEmpty()) {
-            comments = commentRepo.findByTag(filter);
-        } else {
-            comments = commentRepo.findAll();
-        }
-
+        Iterable<Comment> comments = commentService.filterComment(filter);
         model.addAttribute("comments", comments);
-        model.addAttribute("filter", filter);
         return "main";
     }
 
     @PostMapping("/main")
     public String addComment(@AuthenticationPrincipal User user, @Valid Comment comment, BindingResult bindingResult, Model model) {
-            comment.setAuthor(user);
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("comments", comment);
-        } else {
-            commentRepo.save(comment);
-        }
+        commentService.checkComment(user, comment, bindingResult, model);
         Iterable<Comment> comments = commentRepo.findAll();
         model.addAttribute("comments", comments);
         Iterable<Book> books = bookRepo.findAll();
         model.addAttribute("books", books);
         return "booklist";
-    }
-
-    @PostMapping("filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model){
-        Iterable<Comment> comments;
-        if (filter != null && filter.isEmpty()) {
-            comments = commentRepo.findByTag(filter);
-        }
-        else {
-            comments = commentRepo.findAll();
-        }
-        model.put("comments", comments);
-        return "main";
     }
 }

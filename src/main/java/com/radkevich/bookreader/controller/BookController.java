@@ -4,6 +4,7 @@ import com.radkevich.bookreader.model.Book;
 import com.radkevich.bookreader.model.Comment;
 import com.radkevich.bookreader.repository.BookRepo;
 import com.radkevich.bookreader.repository.CommentRepo;
+import com.radkevich.bookreader.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,9 @@ import java.util.Map;
 @Controller
 public class BookController {
     @Autowired
+    private BookService bookService;
+
+    @Autowired
     private CommentRepo commentRepo;
 
     @Autowired
@@ -22,14 +26,8 @@ public class BookController {
 
     @GetMapping("/book")
     public String mainBook(@RequestParam(required = false, defaultValue = "") String filter, Map<String, Object> model) {
-        Iterable<Book> books = bookRepo.findAll();
-        if (filter != null && !filter.isEmpty()) {
-            books = bookRepo.findByTag(filter);
-        } else {
-            books = bookRepo.findAll();
-        }
+        Iterable<Book> books = bookService.filterBook(filter);
         model.put("books", books);
-        model.put("filter", filter);
         return "booklist";
     }
 
@@ -47,36 +45,14 @@ public class BookController {
         return "bookEdit";
     }
 
-
-/*    @PostMapping("/book/edit/{book}")
-    public String bookUpdate(@PathVariable Book book,
-                             @RequestParam(required = false) Long id,
-                             @RequestParam("bookname") String bookname,
-                             @RequestParam("descripton") String description,
-                             @RequestParam("text") String text,
-                             @RequestParam("tag") String tag,
-                             @RequestParam("genre") String genre,
-                             Model model
-                             ){
-        model.addAttribute("book", book);
-        bookRepo.save(book);
-        return "bookEdit";
-    }*/
-
-/*    @PostMapping("/book/edit/{book}")
-    public String bookUpdate(@PathVariable("book") Long id, @RequestBody @Valid Book book, Model model
-    ){
-        model.addAttribute("book", book);
-        bookRepo.save(book);
-        return "redirect:/book/edit/" + book.getId();
-    }*/
-
     @PostMapping("/book/edit/{book.id}")
     public String bookUpdate(@PathVariable(name="book.id") Book book, Model model
     ){
         model.addAttribute("book", book);
         bookRepo.save(book);
-        return "booklist";
+        Iterable<Comment> comments = commentRepo.findAll();
+        model.addAttribute("comments", comments);
+        return "book";
     }
 
     @PostMapping("/book")
@@ -87,21 +63,8 @@ public class BookController {
                           @RequestParam String genre,
                           Map<String, Object> model) {
       Book book = new Book(bookname, description, text, tag, genre);
-      bookRepo.save(book);
+      bookService.addBook(book);
         Iterable<Book> books = bookRepo.findAll();
-        model.put("books", books);
-        return "booklist";
-    }
-
-    @PostMapping("filterBook")
-    public String filterBook(@RequestParam String filter, Map<String, Object> model){
-        Iterable<Book> books;
-        if (filter != null && filter.isEmpty()) {
-            books = bookRepo.findByTag(filter);
-        }
-        else {
-            books = bookRepo.findAll();
-        }
         model.put("books", books);
         return "booklist";
     }

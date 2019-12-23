@@ -2,6 +2,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'></script>
     <h>List of users</h>
 
     <table class="table table-striped">

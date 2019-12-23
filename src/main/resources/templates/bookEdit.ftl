@@ -2,6 +2,7 @@
 
 <@c.page>
     <h5>Book Editor</h5>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'></script>
     <a href="/book" type="submit" class="btn btn-outline-primary">Back to book list</a>
     <form action="/book/edit/${book.id}" method="post">
         <div class="card">

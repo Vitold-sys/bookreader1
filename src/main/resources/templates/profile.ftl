@@ -1,6 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'></script>
     <h5>${username}</h5>
     ${message?ifExists}
     <form method="post">

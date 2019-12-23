@@ -2,7 +2,8 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    User editor
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'></script>
+    User Editor
 
     <form action="/user" method="post">
         <input type="text" name="username" value="${user.username}">

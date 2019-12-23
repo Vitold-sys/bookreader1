@@ -1,9 +1,8 @@
 package com.radkevich.bookreader.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Book {
@@ -15,6 +14,14 @@ public class Book {
     private String text;
     private String tag;
     private String genre;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_likes",
+            joinColumns = { @JoinColumn(name = "book_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
 
     public String getDescription() {
         return description;
@@ -62,6 +69,14 @@ public class Book {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public Set<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<User> likes) {
+        this.likes = likes;
     }
 
     public Book() {

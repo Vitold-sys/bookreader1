@@ -3,6 +3,7 @@ package com.radkevich.bookreader.controller;
 
 import com.radkevich.bookreader.model.User;
 import com.radkevich.bookreader.model.dto.CaptchaResponseDto;
+import com.radkevich.bookreader.service.RegistrationService;
 import com.radkevich.bookreader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +23,11 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+    @Autowired
+    private RegistrationService registrationService;
 
     @Autowired
     private UserService userService;
-
-    @Value("${recaptcha.secret}")
-    private String secret;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -46,28 +45,8 @@ public class RegistrationController {
             BindingResult bindingResult,
             Model model
     ) {
-        String url = String.format(CAPTCHA_URL, secret, captchaResponce);
-        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-        if (!response.isSuccess()) {
-            model.addAttribute("captchaError", "Fill captcha");
-        }
-        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
-        if (isConfirmEmpty) {
-            model.addAttribute("password2Error", "Password confirmation cannot be empty");
-        }
-        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
-            model.addAttribute("passwordError", "Passwords are different!");
-        }
-        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errors);
-            return "registration";
-        }
-        if (!userService.addUser(user)) {
-            model.addAttribute("usernameError", "User exists!");
-            return "registration";
-        }
-        return "redirect:/login";
+        registrationService.checkUser(passwordConfirm, captchaResponce, user, bindingResult, model);
+        return "login";
     }
 
     @GetMapping("/activate/{code}")

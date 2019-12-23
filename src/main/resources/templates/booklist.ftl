@@ -1,10 +1,12 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <form method="get" action="/book" class="form-inline">
                 <select name="filter" autofocus class="form-control input-lg" id="tagBook">
+                    <option value="">Select please</option>
                     <option>Action and Adventure</option>
                     <option>Anthology</option>
                     <option>Classic</option>
@@ -24,6 +26,7 @@
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         Add new Book
     </a>
+
     <div class="collapse show" id="collapseExample">
         <div class="form-group mt-3">
             <form method="post" enctype="multipart/form-data">
@@ -42,23 +45,6 @@
                         <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}"
                                name="tag" placeholder="Enter tag" />
                     </div>
-                    <#--<li class="list-group-item mt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="tag">Tags</span>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="text" id="tag" value="Antology" name="Antology">
-                            <label class="form-check-label" for="Antology" >Antology</label>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="text" id="tag" value="Classic" name="Classic">
-                            <label class="form-check-label" for="Classic">Classic</label>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="text" id="tag" value="Drama" name="Drama">
-                            <label class="form-check-label" for="Drama">Drama</label>
-                        </div>
-                    </li>-->
                     <#if textError??>
                         <div class="invalid-feedback">
                             ${textError}
@@ -87,7 +73,6 @@
             </form>
         </div>
     </div>
-
         <#list books as book>
             <div class="card">
                 <ul class="list-group list-group-flush">
@@ -97,7 +82,9 @@
                     <li class="list-group-item">Tags: ${book.tag}</li>
                     <li class="list-group-item">Genre: ${book.genre}</li>
                     <a href="/book/${book.id}" class="btn btn-info">View book</a>
+                   <#if user??>
                     <a href="/book/edit/${book.id}" class="btn btn-dark">Edit book</a>
+                   </#if>
                 </ul>
             </div>
         <#else>

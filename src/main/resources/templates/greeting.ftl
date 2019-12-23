@@ -2,7 +2,7 @@
 <#import "login.ftl" as l>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
+<body data-turbolinks="false">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Bookreader</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,36 +140,7 @@
         No books
     </#list>
     </div>
-
-<#--<#import "parts/common.ftl" as c>
-
-<@c.page>
-
-    <h5>Hello, guest</h5>
-
-    <p>Welcome to your bookreader</p>
-
-    <a href="/book" type="submit" class="btn btn-outline-primary">Book list</a>
-    <p>Have a nice day!</p>
-    <#include "parts/cloudTags.ftl">
-    <#list books as book>
-        <div class="card">
-            <ul class="list-group list-group-flush">
-                <div class="card-body">
-                    <h5 class="list-group-item">Book name: ${book.bookname}</h5>
-                    <li class="list-group-item">Description: ${book.description}</li>
-                    <li class="list-group-item">Tags: ${book.tag}</li>
-                    <li class="list-group-item">Genre: ${book.genre}</li>
-                    <a href="/book/${book.id}" class="btn btn-info">View book</a>
-                    <a href="/book/${book.id}" class="btn btn-dark">Edit book</a>
-            </ul>
-        </div>
-    <#else>
-        No books
-    </#list>
-    </div>
-</@c.page>-->
-
+</body>
 
 
 
